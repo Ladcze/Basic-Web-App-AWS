@@ -20,11 +20,13 @@ The diagram below provides a visual representation of the services used in this 
 
 # Services deployed
 The key services required (including an AWS account with administrator level access) for this project are the 
-- AWS Amplify
+- AWS Amplify 
 - AWS IAM
 - Amazon API Gateway
 - AWS Lambda
 - Amazon DynamoDB
+
+![aws_amplify](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/fbd48586-5230-402d-83f8-a8425b744aec)  ![aws_iam](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/b9d69897-fdc5-4330-ab0e-4bd8af2547f5)  ![amazon_api_gateway](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/65959073-c8b9-4254-aaa4-eb57e218e728)  ![aws_lambda](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/386ecaf1-edeb-42b7-89de-d001f2eeb6ff)  ![amazon_dynamodb](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/d0837914-2516-4769-9c9c-c612f7fc25c2)
 
 ---
 
@@ -33,69 +35,77 @@ The key services required (including an AWS account with administrator level acc
 - Build Serverless Function
 - Link Serverless Function to Web App
 - Create Data Table
-- Add Interactivity to Web App
+- Add Interactivity to Web App   
+
+For the purpose of this project, it's imperative all services are deployed within the same region/location. 
 
 ---
 
-# Create the Web App: Deploying static resources for your web application using the AWS Amplify Console.
+# 1. Create the Web App: Deploying static resources for your web application using the AWS Amplify Console.
+AWS Amplify is an AWS offering/service used to develop and deploy cloud-powered mobile and web apps. It provides a continuous delivery and hosting service for web applications.   
 
---The website will be a fairly simple "Hello World" page, with a more functionality added later on. 
---All of your static web content will be hosted by AWS Amplify. The Amplify service is ideal for hosting and deploying static websites. Service users will access the published/hosted site using the URL exposed by Amplify.
---Amplify also provides support for custom domains so this can be implemented (if required). 
+Create a new file and save the file as index.html; and have it zipped in ready for upload to Amplify.    
+The website is a fairly simple "Hello World" page, with more functionality added later on. The said basic static webpage will be hosted by AWS Amplify. The Amplify service is ideal for hosting and deploying static websites. Service users will access the published/hosted site using the URL exposed by Amplify. Amplify also provides support for custom domains so this can be implemented (if required). This will implemeneted later on.   
 
-• Create an Amplify app
-• Upload files for a website directly to Amplify
-• Deploy new versions of a webpage with Amplify
+-  - Create an Amplify app.
+
+Log into the Amplify console.   
+In the Get Started section, under Host your web app, choose the orange Get started button.   
+Select Deploy without Git provider    
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/a799eaaa-8c89-49f8-9541-689516333e59) 
+   
+Enter a name for the app (Ladcze's World) and set environment name (Test or Dev).   
+Upload the zipped file for the website directly onto Amplify.   
+Choose the Save and deploy button.   
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/877ae2a8-f3fd-473a-8ae3-1e1adee5bbdf)
+
+After a few seconds, you should see the message Deployment successfully completed.
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/2e9303ea-8424-48fe-bfe8-7c3f66156d98)
 
 
-Create a new file and Save the file as index.html.
-ZIP (compress) only the HTML file
-log into the Amplify console. 
-5. In the Get Started section, under Host your web app, choose the orange Get started button.
-6. Select Deploy without Git provider. This is what you should see on the screen:
-7. Choose the Continue button.
-8. In the App name field, enter Ladcze's World.
-9. For Environment name, enter dev.
-10. Select the Drag and drop method. This is what you should see on your screen:
-11. Choose the Choose files button.
-12. Select the ZIP file you created in Step 3.
-13. Choose the Save and deploy button.
-14. After a few seconds, you should see the message Deployment successfully completed.
-
+ <!-- -  - Deploy new versions of a webpage with Amplify -->
 
 ---
 
- # Building the  Serverless Function (using AWS Lambda).
+# 2. Building the Serverless Function (using AWS Lambda).
+AWS Lambda is an event-driven, serverless computing service that runs code in response to events and automatically manages the computing resources required by that code.   
 
-Using Lambda, a small piece of code will be written in Python, JavaScript, or Java, to be used in a later module to add interactivity to your web page. 
-These serverless functions are triggered based on a specific event you will define in the code.
+With Lambda, a small piece of code is written in Python. This will be used at a later time to add interactivity to the webpage/app created. These serverless functions are triggered based on a specific event to be defined within the code.   
 
-***
+-  - Create a Lambda function from scratch using the AWS console (in Python)   
 
-What you will accomplish
-In this module, you will:
-Create a Lambda function from scratch using the AWS console (in Python, JavaScript, or Java)
-Create (JSON) events in the AWS console to test your function
+Log into the AWS Lambda console.   
+Click the Create function button.   
+Under Function name, enter LadczeWorldFunction.   
+Select Python 3.11 from the runtime dropdown and leave the rest of the defaults unchanged.   
 
-***
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/d1fc99ca-8238-40c0-9260-6a9197b66dae)
 
-In a new browser tab, log in to the AWS Lambda console.
-It is imperative that the function is created in same regaion as app was deployed. 
-Click the Create function button.
-Under Function name, enter HelloWorldFunction.
-Select Python 3.8 from the runtime dropdown and leave the rest of the defaults unchanged.
-6. Choose the orange Create function button.
-7. You should see a green message box at the top of your screen with the following message "Successfully created the function HelloWorldFunction."
-8. Under Code source, replace the code in lambda_function.py with the following:
-9. Save by going to the file menu and selecting Save to save the changes.
-10. Choose Deploy to deploy the changes.
-11. Let's test our new function. Choose the orange Test button to create a test event by selecting Configure test event.
+Choose the orange Create function button.   
+You should see a green message box at the top of your screen with the following message "Successfully created the function LadczeWorldFunction."   
 
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/15b6c5d9-78aa-4c6c-843f-10ebad0bbbf7)   
+
+   
+
+-  - Create (JSON) events in the AWS console to test your function.   
+
+Under Code source, replace the code in lambda_function.py with the following: (see LambdaFunction.py in repo).   
+Save (using File-save menu) to implement the changes.   
+
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/393ab3c4-f9e0-4cd6-8bb6-618ad2f390fd)    
+
+Choose Deploy to deploy the changes.   
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/173aeae8-ecc7-4a83-9431-2852f3bf3d89)
+
+
+A quick test of the new function (using the orange Test button) to create a test event (after configuring a test event) is successful.   
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/5ff2f207-c17d-4881-857e-450cdc9f904f)
 
 
 ---
  
- # Linking  Serverless Function to Web App: Deploy your serverless function with API Gateway.
+ # 3. Linking Serverless Function to Web App: Deploying the serverless function with API Gateway.
 
  use Amazon API Gateway to create a RESTful API that will allow us to make calls to our Lambda function from a web client 
 The API Gateway acts as a middle layer between the front-end (web app) and the serverless back-end (function).   
@@ -151,7 +161,7 @@ Summary/Note - We added API Gateway and connected it to our existing Lambda func
 
 ---
 
-# Create Data Table: Persist data in an Amazon DynamoDB table.
+# 4. Create Data Table: Persist data in an Amazon DynamoDB table.
 
 we will create a table to persist data using Amazon DynamoDB. DynamoDB is a key-value database service, so we do not need to create a schema for our data. It has consistent performance at any scale and there are no servers to manage when using it.   
 
@@ -240,7 +250,7 @@ You should see a message that starts with Hello from Lambda followed by the text
 --- 
 
 # Conclusion/Summary
-Following thorugh the above steps, we now have a working web app deployed by Amplify console that can call a Lambda function via API Gateway.   
+Following through the above steps, we now have a working web app deployed by Amplify console that can call a Lambda function via API Gateway.   
 All the AWS services set up can securely communicate with each other coourtesy the permissions managed/seup within IAM.    
 When a user clicks on the Call API button in the web app, it makes a call to our API, which triggers the Lambda function. The Lambda function writes to a database and returns a message to our client via API Gateway. 
 
