@@ -219,9 +219,8 @@ Summary/Note - We added two services in this module: DynamoDB (for storage) and 
 
 ---
 
- # Add Interactivity to Web App: Modifying your web app to invoke your API.
-
- will update the static website we created in module one to invoke the REST API we created in module three. This will add the ability to display text based on what you input.   
+# 5. Add Interactivity to Web App: Modify your web app to invoke your API.
+The initial static webpage created in section #1 (Create web app) will be updated to invoke the REST API created in section #3 (deploying lambda function with API gateway). This will add the ability to display text based on what has been inouted vai the webpage. 
 
 Call an API Gateway API from an HTML page
 Upload a new version of a web app to the Amplify console   
