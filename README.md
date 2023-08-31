@@ -5,10 +5,13 @@ A static web app that rendering "Ladcze's World" with some in-built API function
 
 # Introduction
 This project is a simple web application comprising a static web app that renders "Ladcze's World".
-The output returned will be based on custom input as provided using some functionalities built into the app. 
+The output returned will be based on custom input as provided using some functionalities built into the app.   
 Below is a snapshot of what the final project looks like   
+The live app can be accessed via 
+https://apiworld.ladcze.click/   
 
-![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/3524d107-5309-425e-af0f-b92377480672)
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/745236fe-d84c-4fe1-a0e2-bd0a38b208de)
+
 
 ---
 
@@ -105,155 +108,190 @@ A quick test of the new function (using the orange Test button) to create a test
 
 ---
  
- # 3. Linking Serverless Function to Web App: Deploying the serverless function with API Gateway.
-
- use Amazon API Gateway to create a RESTful API that will allow us to make calls to our Lambda function from a web client 
+# 3. Linking Serverless Function to Web App: Deploying the serverless function with API Gateway.
 The API Gateway acts as a middle layer between the front-end (web app) and the serverless back-end (function).   
+Using the Amazon API Gateway, a RESTful API can be created. This will enable us make calls to the Lambda function from a web client 
 
+- - Create a new API using API Gateway.
 
---Create a new API using API Gateway
---Define HTTP methods on your API
---Trigger a Lambda function from an API
---Enable cross-origin resource sharing (CORS) on an API so you can consume resources from a different origin (domain)
---Test an API created with API Gateway from the AWS Management Console
-
-******
-
-Log in to the API Gateway console.
-In the Choose an API type section, find the REST API card and choose the Build button on the card.
-Under Choose the protocol, select REST.
-Under Create new API, select New API.
-In the API name field, enter HelloWorldAPI.
-Select Edge optimized from the Endpoint Type dropdown. (Note: Edge-optimized endpoints are best for geographically distributed clients. This makes them a good choice for public services being accessed from the internet. Regional endpoints are typically used for APIs that are accessed primarily from within the same AWS Region.)
+Log in to the API Gateway console.   
+In the Choose an API type section, locate the REST API card and choose the Build button on the card.   
+Under Choose the protocol, select REST.   
+Under Create new API, select New API.   
+In the API name field, enter HelloWorldAPI.   
+Select Edge optimized from the Endpoint Type dropdown. (Edge-optimized endpoints are best for geographically distributed clients. This makes them a good choice for public services being accessed from the internet. Regional endpoints are typically used for APIs that are accessed primarily from within the same AWS Region.)   
 Choose the blue Create API button. Your settings should look like the accompanying screenshot.
 
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/330c1047-4fa3-4269-bcd0-5ef91a443ce4)
 
-In the left navigation pane, select Resources under API: HelloWorldAPI.
-Ensure the "/" resource is selected.
-From the Actions dropdown menu, select Create Method.
-Select POST from the new dropdown that appears, then select the checkmark.
-Select Lambda Function for the Integration type.
-Select the Lambda Region you used when making the function (or else you will see a warning box reading "You do not have any Lambda Functions in...").
-Enter HelloWorldFunction in the Lambda Function field.
-Choose the blue Save button.
-You should see a message letting you know you are giving the API you are creating permission to call your Lambda function. Choose the OK button.
-With the newly created POST method selected, select Enable CORS from the Action dropdown menu.
-Leave the POST checkbox selected and choose the blue Enable CORS and replace existing CORS headers button.
-You should see a message asking you to confirm method changes. Choose the blue Yes, replace existing values button.
+  
+- - Define HTTP methods on your API   
 
-
-In the Actions dropdown list, select Deploy API.
-Select [New Stage] in the Deployment stage dropdown list.
-Enter dev for the Stage Name.
-Choose Deploy.
-Copy and save the URL next to Invoke URL (you will need it in module five).
-
-
-In the left navigation pane, select Resources.
-The methods for our API will now be listed on the right. Choose POST.
-Choose the small blue lightning bolt.
-Paste the following into the Request Body field:
-5. Choose the blue Test button.
-6. On the right side, you should see a response with Code 200.
-7. Great! We have built and tested an API that calls our Lambda function.
-
-Summary/Note - We added API Gateway and connected it to our existing Lambda function. Now, we can trigger our function with an API call. We are still missing the ability to generate this call from our web client.
-
----
-
-# 4. Create Data Table: Persist data in an Amazon DynamoDB table.
-
-we will create a table to persist data using Amazon DynamoDB. DynamoDB is a key-value database service, so we do not need to create a schema for our data. It has consistent performance at any scale and there are no servers to manage when using it.   
-
-Additionally, we will use the AWS Identity and Access Management (IAM) service to securely give our services the required permissions to interact with each other. Specifically, we are going to allow the Lambda function we created in module two to write to our newly created DynamoDB table using an IAM policy. To do this, we will use the AWS SDK (Python, JavaScript, or Java) from our Lambda function   
-
-Create a DynamoDB table using the AWS Management Console
-Create a role and manage permissions with IAM
-Write to a DynamoDB table using the AWS SDK (Python, JavaScript, or Java)   
-
-
-Log in to the Amazon DynamoDB console.
-Make sure you create your table in the same Region in which you created the web app in the previous module. You can see this at the very top of the page, next to your account name.
-Choose the orange Create table button.
-Under Table name, enter HelloWorldDatabase.
-In the Partition key field, enter ID. The partition key is part of the table's primary key.
-Leave the rest of the default values unchanged and choose the orange Create table button.
-In the list of tables, select the table name, HelloWorldDatabase.
-In the General information section, show Additional info by selecting the down arrow.
-9. Copy the Amazon Resource Name (ARN). You will need it later in this module.   
-
-***
-
-Now that we have a table, let's edit our Lambda function to be able to write data to it. In a new browser window, open the AWS Lambda console.
-Select the function we created in module two (if you have been using our examples, it will be called HelloWorldFunction). If you don't see it, check the Region dropdown in the upper right next to your name to ensure you're in the same Region you created the function in.
-We'll be adding permissions to our function so it can use the DynamoDB service, and we will be using AWS Identity and Access Management (IAM) to do so.
-Select the Configuration tab and select Permissions from the right side menu.
-In the Execution role box, under Role name, choose the link. A new browser tab will open.
-In the Permissions policies box, open the Add permissions dropdown and select Create inline policy.
-Select the JSON tab.
-Paste the following policy in the text area, taking care to replace your table's ARN in the Resource field in line 15:
-9. This policy will allow our Lambda function to read, edit, or delete items, but restrict it to only be able to do so in the table we created.
-10. Choose the blue Review Policy button.
-11. Next to Name, enter HelloWorldDynamoPolicy.
-12. Choose the blue Create Policy button.
-13. You can now close this browser tab and go back to the tab for your Lambda function.   
-
-
-***
-
-test the changes
-
-Choose the orange Test button.
-You should see an Execution result: succeeded message with a green background.
-In a new browser tab, open the DynamoDB console.
-In the left-hand navigation pane, select Tables > Explore items.
-Select HelloWorldDatabase, which we created earlier in this module.
-Select the Items tab on the right.
-Items matching your test event appear under Items returned. If you have been using our examples, the item ID will be Hello from Lambda, Ada Lovelace or Ada Lovelace.
-Every time your Lambda function executes, your DynamoDB table will be updated. If the same name is used, only the time stamp will change.
-
-***
-
-Summary/Note - We added two services in this module: DynamoDB (for storage) and IAM (for managing permissions securely). Both are connected to our Lambda function, so that it can write to our database. The final step is to add code to our client to call the API Gateway.
-
-
----
-
-# 5. Add Interactivity to Web App: Modify your web app to invoke your API.
-The initial static webpage created in section #1 (Create web app) will be updated to invoke the REST API created in section #3 (deploying lambda function with API gateway). This will add the ability to display text based on what has been inouted vai the webpage. 
-
-Call an API Gateway API from an HTML page
-Upload a new version of a web app to the Amplify console   
-
-***
-
-Open the index.html file you created in module one.
-Replace the existing code with the following: ""see code base""
-3. Make sure you add your API Invoke URL on Line 41 (from module three). Note: If you do not have your API's URL, you can get it from the API Gateway console by selecting your API and choosing stages.
-4. Save the file.
-5. ZIP (compress) only the HTML file.
-6. Open the Amplify console.
-7. Choose the web app created in module one.
-8. Choose the white Choose files button.
-9. Select the ZIP file you created in Step 5.
-10. When the file is uploaded, a deployment process will automatically begin. Once you see a green bar, your deployment will be complete.   
-
-***
-Test updated web app
-Choose the URL under Domain.
-Your updated web app should load in your browser.
-Fill in your name (or whatever you prefer) and choose the Call API button.
-You should see a message that starts with Hello from Lambda followed by the text you filled in.   
+In the left navigation pane, select Resources under API: HelloWorldAPI.    
+Ensure the "/" resource is selected.    
+From the Actions dropdown menu, select Create Method.   
+Select POST from the new dropdown that appears, then select the checkmark.   
+Select Lambda Function for the Integration type.   
+Select the Lambda Region you used when making the function.   
+Enter LadczeWorldFunction in the Lambda Function field.   
+Choose the blue Save button.   
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/9d1d5c15-78fd-44de-a9e5-b69bdd9e5804)
+   
+<!-- - - Trigger a Lambda function from an API   -->
  
+- - Enable cross-origin resource sharing (CORS) on an API so you can consume resources from a different origin (domain)   
+
+You should see a message letting you know you are giving the API you are creating permission to call your Lambda function.   
+Choose the OK button.   
+With the newly created POST method selected, select Enable CORS from the Action dropdown menu.   
+Leave the POST checkbox selected and choose the blue Enable CORS and replace existing CORS headers button.
+
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/71bd1924-1e55-450c-8c3d-74291427021a)
+
+You should see a message asking you to confirm method changes. Choose the blue Yes, replace existing values button. 
+
+
+In the Actions dropdown list, select Deploy API.   
+Select [New Stage] in the Deployment stage dropdown list.   
+Enter dev for the Stage Name.   
+Choose Deploy.   
+
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/19887396-7b80-42c1-a44e-f157e1a773e8)
+
+Do make a note of the URL next to Invoke URL (this will be required at the time of setting up/adding interactions into the web app).   
+
+
+
+- - Test an API created with API Gateway from the AWS Management Console
+
+In the left navigation pane, select Resources.   
+The methods for our API will now be listed on the right. Choose POST.   
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/aee27a5f-4b6b-457b-a90f-e242a1a65926)  
+Choose the small blue lightning bolt.   
+Paste relevant code (see repo) into the Request Body field:   
+Choose the blue Test button.  
+
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/e214ffdb-f341-44d5-9e0e-1758936cb498)
+
+On the right side, you should see a response with Code 200.   
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/ee39b9d6-5e3b-46c0-92ab-7a354d6747fa)    
+
+
+   
+That concludes a successful build and test of the API calling the the Lambda function.   
+An API Gateway has been created and its now connectig to the existing Lambda function. The said function can now be triggered with an API call.   
+
+---
+
+# 4. Create Data Table: Persist data in an Amazon DynamoDB table.   
+DynamoDB is a key-value database service, so we do not need to create a schema for our data. It has consistent performance at any scale and there are no servers to manage when using it.    
+
+We'll create a table to persist data using Amazon DynamoDB.    
+Additionally, we will use the AWS Identity and Access Management (IAM) service to securely grant our services the required permissions to interact with each other. In this instance, we'll grant the Lambda function created (in #2 above) to write to the newly created DynamoDB table using an IAM policy. To do this, we will use the AWS SDK (Python) from our Lambda function   
+
+
+- - Create a DynamoDB table using the AWS Management Console
+Log in to the Amazon DynamoDB console.   
+Make sure you create your table in the same Region in which you created the web app in the previous module. You can see this at the very top of the page, next to your account name.   
+Choose the orange Create table button.   
+Under Table name, enter LadczeWorldDatabase.   
+In the Partition key field, enter ID. The partition key is part of the table's primary key.
+
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/8b88a6e5-8501-4b9d-bd60-75440204aff2)   
+
+Leave the rest of the default values unchanged and choose the orange Create table button.  
+
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/d84bc702-b0c8-422c-bacc-766ece915ca8)   
+
+
+In the list of tables, select the table name, LadczeWorldDatabase.    
+In the General information section, show Additional info by selecting the down arrow.    
+Make a note of the Amazon Resource Name (ARN). This will be required in due course.    
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/fdf16841-35d2-485a-a7e5-48b69157247b)   
+
+   
+
+   
+- - Write to a DynamoDB table using the AWS Python SDK.
+
+Navigate to the AWS Lambda console.   
+Select the LadczeWorkdFunction. **Remember all services associated with this project must run in the same region.      
+Setup permissions to the function so it can use the DynamoDB service.   
+Select the Configuration tab and select Permissions from the right side menu.   
+In the Execution role box, under Role name, choose the link.   
+In the Permissions policies box, open the Add permissions dropdown and select Create inline policy.   
+Select the JSON tab.   
+Paste the following policy in the text area, taking care to replace your table's ARN in the Resource field in line 15:   
+This policy will allow our Lambda function to read, edit, or delete items, but restrict it to only be able to do so in the table we created.   
+Choose the blue Review Policy button.   
+Next to Name, enter HelloWorldDynamoPolicy.   
+Choose the blue Create Policy button.   
+You can now close this browser tab and go back to the tab for your Lambda function.      
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/249e6792-a521-4684-b035-5ee450464f85)
+
+
+- - Testing the changes   
+
+Choose the orange Test button.   
+You should see an Execution result: succeeded message with a green background.   
+In a new browser tab, open the DynamoDB console.   
+In the left-hand navigation pane, select Tables > Explore items.   
+Select HelloWorldDatabase, which we created earlier in this module.   
+Select the Items tab on the right.   
+Items matching your test event appear under Items returned. Every time your Lambda function executes, your DynamoDB table will be updated. If the same name is used, only the time stamp will change.   
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/a1506c32-415b-4d9a-a3c4-482ba716e20f)
+
+   
+    
+We've successfully added two services at this stage: DynamoDB (for storage) and IAM (for managing permissions securely). Both are connected to the LadczeWorldFunction, so that it can write to the LadczeWorldDatabase.
+
+---
+
+# 5. Add Interactivity to Web App: Modify the web app to invoke your API.
+The initial static webpage created in section #1 (Create web app) will be updated to invoke the REST API created in section #3 (deploying lambda function with API gateway). This will add the ability to display text based on what has been inouted vai the webpage.   
+
+<br>   
+
+- - Call an API Gateway API from an HTML page   
+
+Open the index.html file you created in module one.   
+Replace the existing code with the relevant code (see repo).    
+Ensure the API Invoke URL is updated/referenced accordingly.    
+Save the file.   
+ZIP (compress) only the HTML file.
+<br>   
+
+- - Upload a new version of a web app to the Amplify console   
+
+Open the Amplify console.   
+Choose the web app created in module one.   
+Choose the white Choose files button.   
+Select the ZIP file you created in Step #5.   
+When the file is uploaded, a deployment process will automatically begin. Once you see a green bar, your deployment will be complete.
+
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/8aeb440a-b2f7-49a8-8750-4cde1b8118d2)   
+<br>   
+
+- - A quick test on the updated web app   
+
+Choose the URL under Domain.   
+Your updated web app should load in your browser.   
+Fill in your name (or whatever you prefer) and choose the Call API button.   
+You should see a message that starts with Hello from Lambda followed by the text you filled in.
+
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/a81c8356-3d77-4522-b54a-50e4f47a97aa)
+
 
 --- 
 
 # Conclusion/Summary
-Following through the above steps, we now have a working web app deployed by Amplify console that can call a Lambda function via API Gateway.   
+Following through the above, we now have a working web app deployed by Amplify console that can call a Lambda function via API Gateway.   
 All the AWS services set up can securely communicate with each other coourtesy the permissions managed/seup within IAM.    
-When a user clicks on the Call API button in the web app, it makes a call to our API, which triggers the Lambda function. The Lambda function writes to a database and returns a message to our client via API Gateway. 
-
-![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/ea50faf2-ce0a-43f5-b79b-6891e2efd404)
+When a user clicks on the Call API button in the web app, it makes a call to our API, which triggers the Lambda function. The Lambda function writes to a database and returns a message to our client via API Gateway.   
+<br>
+A custom domain name has been setup as well to provide a friendly URL for the deployed app.   
+See live app via https://apiworld.ladcze.click/   
+![image](https://github.com/Ladcze/Basic-Web-App-AWS/assets/97769275/745236fe-d84c-4fe1-a0e2-bd0a38b208de) 
 
 ---
 
