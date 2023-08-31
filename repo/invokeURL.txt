@@ -1,0 +1,5 @@
+invoke URL link
+https://lstg6skl62.execute-api.eu-west-2.amazonaws.com/Dev
+
+Amazon Resource name: 
+arn:aws:dynamodb:eu-west-2:209192986637:table/LadczeWorldDatabase
